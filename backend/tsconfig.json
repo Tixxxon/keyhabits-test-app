@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "ES2020",
+    "baseUrl": "./",
+    "outDir": "dist",
+    "strict": true,
+    
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@dto/*": [
+        "../dto/*"
+    ]},
+    "types": [
+      "./src/env.d.ts"
+    ]
+  },
+  "include": ["../dto/**/*", "src/**/*"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
+}
