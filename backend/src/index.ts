@@ -2,10 +2,11 @@ import express from 'express';
 import path from 'path';
 import { Config, Configuraton } from './config';
 import { Database } from './database';
-
-// import routes from './routes/index';
+import { initControllers } from './routes';
 
 const app = express();
+
+app.use(express.json());
 
 Configuraton.init();
 
@@ -14,19 +15,21 @@ const PORT = Configuraton.get<Config['port']>('port');
 
 const NODE_ENV = Configuraton.get<Config['nodeEnv']>('nodeEnv');
 
-app.get('/', (req, res) => {
-  switch (NODE_ENV) {
-    case 'production':
-      return res.sendFile(path.resolve('./public/index.html'));
-    default:
-      return res.send(`Hello from backend`);
-  }
-});
+Database.createPool(Configuraton.get<Config['database']>('database')).then(
+  result => {
+    app.get('/', (req, res) => {
+      switch (NODE_ENV) {
+        case 'production':
+          return res.sendFile(path.resolve('./public/index.html'));
+        default:
+          return res.send(`Hello from backend`);
+      }
+    });
 
-// app.get('/api', )
+    initControllers(app);
 
-Database.createPool(Configuraton.get<Config['database']>('database'));
-
-app.listen(PORT, HOST, () => {
-  console.info(`Server started: http://${HOST}:${PORT}`);
-});
+    app.listen(PORT, HOST, () => {
+      console.info(`Server started: http://${HOST}:${PORT}`);
+    });
+  },
+);

@@ -1,3 +1,8 @@
 export interface CreateCarDto {
-  mark: string;
+  model: string;
+  brandId: number;
+}
+
+export interface CreateCarBrandDto {
+  brand: string;
 }
