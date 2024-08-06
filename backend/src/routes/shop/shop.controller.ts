@@ -1,20 +1,22 @@
 import { Router, Request, Express, Response } from 'express';
 import { ShopService } from './shop.service';
-import { PhoneService } from './phone.service';
-import { CarService } from '../car/car.service';
-import { CarBrandsModel } from '@/database/models/car/car-brands.model';
-import { CarModel } from '@/database/models/car/car-models.model';
 import { ShopModel } from '@/database/models/shop/shop.model';
+import { ShopPhonesModel } from '@/database/models/shop/shop-phones.model';
+import { PhoneModel } from '@/database/models/shop/phones.model';
+import { ShopCarsModel } from '@/database/models/shop/shop-cars.model';
 
 export function ShopController(app: Express) {
-  const carBrandRepositroy = CarBrandsModel.getInstance();
-  const carRepository = CarModel.getInstance();
-
-  const carService = new CarService(carBrandRepositroy, carRepository);
-  const phoneService = new PhoneService();
   const shopRepository = ShopModel.getInstance();
+  const shopPhoneRepository = ShopPhonesModel.getInstance();
+  const phoneRepository = PhoneModel.getInstance();
+  const shopCarRepository = ShopCarsModel.getInstance();
 
-  const shopService = new ShopService(phoneService, carService, shopRepository);
+  const shopService = new ShopService(
+    shopRepository,
+    shopPhoneRepository,
+    phoneRepository,
+    shopCarRepository,
+  );
 
   const router = Router();
 
@@ -36,6 +38,7 @@ export function ShopController(app: Express) {
       const newShop = await shopService.createShop(req.body);
       return res.json(newShop);
     } catch (error) {
+      console.log(error);
       if (error instanceof Error) {
         if (error.message.startsWith('duplicate key value')) {
           return res

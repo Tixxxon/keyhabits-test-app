@@ -9,10 +9,17 @@ import { CreateCarBrandDto, CreateCarDto } from '@dto/car.dto';
 import { Request, Response } from 'express';
 
 export class CarService {
+  private static Instance: CarService;
   constructor(
     private readonly carBrandRepostitory: CarBrandsModel,
     private readonly carRepository: CarModel,
-  ) {}
+  ) {
+    CarService.Instance = this;
+  }
+
+  static getInstance() {
+    return CarService.Instance;
+  }
 
   /**
    * @description получение списка всех брендов автомобилей

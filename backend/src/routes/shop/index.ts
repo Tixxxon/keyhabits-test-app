@@ -1,1 +1,1 @@
-import { CreateShopDto} from '@dto/shop.dto'; 
+export { ShopController } from './shop.controller';

@@ -35,11 +35,14 @@ export class ShopPhonesModel implements Model {
   }
 
   async create(createShopPhoneDto: { shopId: number; phoneIds: number[] }) {
-    const insertQuery = createShopPhoneDto.phoneIds.map(
-      phoneId =>
-        `INSERT INTO ${TableName} (shop_id, phone_id) VALUES (${createShopPhoneDto.shopId}, ${createShopPhoneDto.phoneIds})`,
-    );
-    await this.db.query(insertQuery.join(';'));
+    if (createShopPhoneDto.phoneIds.length) {
+      const insertQuery = createShopPhoneDto.phoneIds.map(
+        phoneId => `(${createShopPhoneDto.shopId}, ${phoneId})`,
+      );
+      await this.db.query(
+        `INSERT INTO ${TableName} (shop_id, phone_id) VALUES ${insertQuery.join(',')}`,
+      );
+    }
 
     // return this.findOne({ name: createShopDto.name });
   }

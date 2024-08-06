@@ -36,11 +36,22 @@ export class PhoneModel implements Model {
    * @description создание нового номера телефона
    */
   async create(createPhondDto: { phones: string[] }) {
-    const insertQuery = createPhondDto.phones.map(
-      phone => `INSERT INTO ${TableName} (number) VALUES ('${phone}')`,
+    // Получаем номера, котоыре уже существуют в БД
+    const existingPhones = await this.findAllByNumbers({
+      number: createPhondDto.phones,
+    });
+
+    // Фильтруем только те номера, которых нет в базе данных
+    const missingPhones = createPhondDto.phones.filter(
+      phone => !existingPhones.some(p => p.number === phone),
     );
 
-    await this.db.query(insertQuery.join(';'));
+    if (missingPhones.length !== 0) {
+      const insertQuery = missingPhones.map(phone => `('${phone}')`);
+      await this.db.query(
+        `INSERT INTO ${TableName} (number) VALUES ${insertQuery.join(',')}`,
+      );
+    }
 
     return this.findAllByNumbers({ number: createPhondDto.phones });
   }
@@ -78,7 +89,7 @@ export class PhoneModel implements Model {
    */
   async findAllByNumbers(query: { number: string[] }) {
     const where = query
-      ? `WHERE number IN (${query.number.map(number => `${number}`).join(', ')})`
+      ? `WHERE number IN (${query.number.map(number => `'${number}'`).join(', ')})`
       : '';
 
     const phones = await this.db.query(`SELECT * FROM ${TableName} ${where}`);

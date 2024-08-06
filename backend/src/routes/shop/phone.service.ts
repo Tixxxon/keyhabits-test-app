@@ -1,3 +1,10 @@
 export class PhoneService {
-  constructor() {}
+  private static Instance: PhoneService;
+  constructor() {
+    PhoneService.Instance = this;
+  }
+
+  static getInstance() {
+    return PhoneService.Instance;
+  }
 }
