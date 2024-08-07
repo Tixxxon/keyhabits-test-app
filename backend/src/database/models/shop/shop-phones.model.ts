@@ -16,6 +16,10 @@ export class ShopPhonesModel implements Model {
     ShopPhonesModel.Instance = this;
   }
 
+  static getTableName() {
+    return TableName;
+  }
+
   static getInstance() {
     return ShopPhonesModel.Instance;
   }
@@ -56,6 +60,26 @@ export class ShopPhonesModel implements Model {
     );
 
     return result.rows.map(result => result.number);
+  }
+
+  /**
+   * @description поиск телефонов по id магазинов
+   
+   */
+  async findShopsPhones(shopIds: number[]) {
+    const result = await this.db.query(`
+      SELECT shop_id, number FROM ${TableName} JOIN ${PhoneTableName} ON ${TableName}.phone_id = ${PhoneTableName}.id WHERE shop_id IN (${shopIds.join(', ')})`);
+
+    const shopPhones: Record<number, string[]> = {};
+
+    result.rows.forEach(phone => {
+      if (!Object.prototype.hasOwnProperty.call(shopPhones, phone.shop_id))
+        shopPhones[phone.shop_id] = [];
+
+      shopPhones[phone.shop_id].push(phone.number);
+    });
+
+    return shopPhones;
   }
 
   async delete(query: { shopId: number; phoneId: number }) {

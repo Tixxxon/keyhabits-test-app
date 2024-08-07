@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import cors from 'cors';
 import { Config, Configuraton } from './config';
 import { Database } from './database';
 import { initControllers } from './routes';
@@ -7,6 +8,7 @@ import { initControllers } from './routes';
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 Configuraton.init();
 

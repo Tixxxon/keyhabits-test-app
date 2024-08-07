@@ -9,6 +9,7 @@ export const TableName = 'car_models';
 export interface CarModelsInterface {
   id: number;
   model: string;
+  price: number;
   brand_id: number;
   brand?: CarBrandModelInterface;
 }
@@ -18,6 +19,10 @@ export class CarModel implements Model {
 
   constructor(private readonly db: Pool) {
     CarModel.Instance = this;
+  }
+
+  static getTableName() {
+    return TableName;
   }
 
   static getInstance() {
@@ -30,6 +35,7 @@ export class CarModel implements Model {
       (
         id        SERIAL,
         model     VARCHAR(40),
+        price     INT NOT NULL,
         brand_id  INT NOT NULL,
         CONSTRAINT fk_car_brand FOREIGN KEY(brand_id) REFERENCES ${CarBrandTableName}(id),
         PRIMARY KEY(model, brand_id)
@@ -44,7 +50,7 @@ export class CarModel implements Model {
    */
   async create(createCarDto: CreateCarDto) {
     await this.db.query(
-      `INSERT INTO ${TableName} (model, brand_id) VALUES ('${createCarDto.model}', ${createCarDto.brandId})`,
+      `INSERT INTO ${TableName} (model, brand_id, price) VALUES ('${createCarDto.model}', ${createCarDto.brandId}, ${createCarDto.price})`,
     );
 
     return this.findOne({
@@ -62,7 +68,8 @@ export class CarModel implements Model {
       `SELECT 
         ${TableName}.id, 
         ${TableName}.model, 
-        ${CarBrandTableName}.brand 
+        ${TableName}.price,
+        ${CarBrandTableName}.brand
       FROM ${TableName} 
       JOIN ${CarBrandTableName} ON ${TableName}.brand_id = ${CarBrandTableName}.id`,
     );
@@ -80,6 +87,7 @@ export class CarModel implements Model {
       `SELECT
         ${TableName}.id, 
         ${TableName}.model, 
+        ${TableName}.price,
         ${CarBrandTableName}.brand 
       FROM ${TableName} 
       JOIN ${CarBrandTableName} ON ${TableName}.brand_id = ${CarBrandTableName}.id
@@ -94,6 +102,7 @@ function findAllMapper(result: QueryResult<CarModelsInterface>) {
   return result.rows.map(res => ({
     id: res.id,
     brand: res.brand,
+    price: res.price,
     model: res.model,
   }));
 }

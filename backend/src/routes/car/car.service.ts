@@ -58,6 +58,7 @@ export class CarService {
   async createCar(createCarDto: CreateCarDto) {
     const newCar = await this.carRepository.create({
       model: createCarDto.model,
+      price: createCarDto.price,
       brandId: createCarDto.brandId,
     });
 

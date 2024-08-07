@@ -10,33 +10,6 @@ export function CarController(app: Express) {
   );
 
   const router = Router();
-  /**
-   * @description получение списка всех брендов автомобилей
-   */
-  router.get('/brands', async (req: Request, res: Response) => {
-    const brands = await carService.getBrands();
-
-    return res.json(brands);
-  });
-
-  /**
-   * @description создание нового бренда автомобилей
-   * @body {brand: string}
-   */
-  router.post('/brands', async (req: Request, res: Response) => {
-    try {
-      const brand = await carService.createBrand(req.body);
-      return res.json(brand);
-    } catch (error) {
-      if (error instanceof Error) {
-        if (error.message.startsWith('duplicate key value')) {
-          return res.status(403).json('Значение уже существует');
-        }
-      }
-
-      return res.status(500);
-    }
-  });
 
   /**
    * @description получение полного списка автомобилей
@@ -75,9 +48,6 @@ export function CarController(app: Express) {
   router.post('/', async (req: Request, res: Response) => {
     try {
       const newCar = await carService.createCar(req.body);
-
-      console.log(newCar);
-
       return res.json(newCar);
     } catch (error) {
       if (error instanceof Error) {
@@ -86,7 +56,35 @@ export function CarController(app: Express) {
         }
       }
 
-      return res.status(500);
+      return res.status(500).send('Ошибка на сервере');
+    }
+  });
+
+  /**
+   * @description получение списка всех брендов автомобилей
+   */
+  router.get('/brands', async (req: Request, res: Response) => {
+    const brands = await carService.getBrands();
+
+    return res.json(brands);
+  });
+
+  /**
+   * @description создание нового бренда автомобилей
+   * @body {brand: string}
+   */
+  router.post('/brands', async (req: Request, res: Response) => {
+    try {
+      const brand = await carService.createBrand(req.body);
+      return res.json(brand);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.startsWith('duplicate key value')) {
+          return res.status(403).json('Значение уже существует');
+        }
+      }
+
+      return res.status(500).send('Ошибка на серверве');
     }
   });
 

@@ -15,6 +15,10 @@ export class PhoneModel implements Model {
     PhoneModel.Instance = this;
   }
 
+  static getTableName() {
+    return TableName;
+  }
+
   static getInstance() {
     return PhoneModel.Instance;
   }

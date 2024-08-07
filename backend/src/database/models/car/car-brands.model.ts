@@ -15,6 +15,10 @@ export class CarBrandsModel implements Model {
     CarBrandsModel.Instance = this;
   }
 
+  static getTableName() {
+    return TableName;
+  }
+
   static getInstance() {
     return CarBrandsModel.Instance;
   }

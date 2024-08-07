@@ -1,12 +1,15 @@
 import axios from 'axios';
 
 export function useHttp() {
-  const apiProto = import.meta.env.API_PROTO ?? 'http';
-  const apiHost = import.meta.env.API_HOST;
-  const apiPort = import.meta.env.API_PORT;
-  const apiTimeout = import.meta.env.API_TIMEOUT ? Number(import.meta.env.API_TIMEOUT) : 2500;
+  const apiProto = import.meta.env.VITE_API_PROTO ?? 'http';
+  const apiHost = import.meta.env.VITE_API_HOST;
+  const apiPort = import.meta.env.VITE_API_PORT;
+  const apiTimeout = import.meta.env.VITE_API_TIMEOUT
+    ? Number(import.meta.env.VITE_API_TIMEOUT)
+    : 2500;
 
-  axios.defaults.baseURL = `${apiProto}://${apiHost}:${apiPort}`;
+  axios.defaults.baseURL = `${apiProto}://${apiHost}:${apiPort}/api`;
+  console.log(axios.defaults.baseURL);
   axios.defaults.timeout = Number(apiTimeout);
   return {
     get: axios.get,

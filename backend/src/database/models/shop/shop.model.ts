@@ -16,6 +16,10 @@ export class ShopModel implements Model {
     ShopModel.Instance = this;
   }
 
+  static getTableName() {
+    return TableName;
+  }
+
   static getInstance() {
     return ShopModel.Instance;
   }

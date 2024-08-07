@@ -21,6 +21,10 @@ export class ShopCarsModel implements Model {
     ShopCarsModel.Instance = this;
   }
 
+  static getTableName() {
+    return TableName;
+  }
+
   static getInstance() {
     return ShopCarsModel.Instance;
   }
