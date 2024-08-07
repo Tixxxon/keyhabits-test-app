@@ -2,13 +2,10 @@
 import Table from '@/components/Common/Table.vue';
 import { onBeforeMount, ref } from 'vue';
 import { useCarService } from '../composables/car';
+import type { TableColumn } from '@/types';
+import { formatPrice, formatText } from '@/utils';
 
-const columns = ref<
-  {
-    label: string;
-    name: string;
-  }[]
->([
+const columns = ref<TableColumn[]>([
   {
     label: 'Марка',
     name: 'brand',
@@ -48,15 +45,6 @@ onBeforeMount(() => {
     });
   });
 });
-
-function formatText(text: string) {
-  return `${text[0].toUpperCase()}${text.slice(1).toLowerCase()}`;
-}
-
-function formatPrice(price: number) {
-  let _price = price.toLocaleString(undefined);
-  return `${_price} ₽`;
-}
 </script>
 
 <template>
