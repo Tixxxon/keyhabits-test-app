@@ -30,6 +30,7 @@ const startResize = (idx: number, event: MouseEvent) => {
   prevResizePosition.value = event.clientX;
 
   document.body.style.cursor = 'col-resize';
+
   document.addEventListener('mousemove', resizeFunction);
   document.addEventListener('mouseup', onMouseUpHandle);
 };

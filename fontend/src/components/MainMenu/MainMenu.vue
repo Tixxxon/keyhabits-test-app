@@ -39,11 +39,11 @@ const { activeMenuIdx } = menuService;
     &--active {
       background-color: rgba(255, 255, 255, 0.6);
     }
-  }
-  &-link {
     &:hover {
       background-color: rgba(255, 255, 255, 0.3);
     }
+  }
+  &-link {
     &__icon {
       max-width: 30px;
       max-height: 30px;
