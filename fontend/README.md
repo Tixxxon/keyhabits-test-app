@@ -1,39 +1,31 @@
 # keyhabbits-frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Фронтовая часть для тестового задания keyhabits
 
-## Recommended IDE Setup
+## Установка пакетов
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
+В первую очередь нужно установить пакеты
 ```sh
-npm install
+yarn install
 ```
 
-### Compile and Hot-Reload for Development
+## Установка переменных окружения
+ 
+Для корректной работы, необходимо установить переменные окружения в файле .env
+
+Параметры для API (Express) 
 
 ```sh
-npm run dev
+VITE_API_HOST=localhost
+VITE_API_PORT=3000
 ```
 
-### Type-Check, Compile and Minify for Production
+Приложение соберётся в директории dist
+
+## Запуск приложения
 
 ```sh
-npm run build
+yarn start
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Фронтовая часть приложения будет запущена по адресу http://localhost:8085
