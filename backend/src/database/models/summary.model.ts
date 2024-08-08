@@ -49,7 +49,7 @@ export class SummaryModel implements Model {
       brand: result.brand,
       model: result.model,
       price: result.price,
-      phones: phones[result.shopid],
+      phones: phones[result.shopid] ?? [],
       shop: result.shop,
     }));
   }

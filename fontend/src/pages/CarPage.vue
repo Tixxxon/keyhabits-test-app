@@ -6,7 +6,8 @@ import type { TableColumn } from '@/types';
 import { formatText } from '@/utils';
 import Table from '@/components/Common/Table.vue';
 import CommonButton from '@/components/Common/Button.vue';
-import CommonDialog from '@/components/Common/Dialog.vue';
+import AddCarForm from '@/components/CarPage/AddCarForm/AddCarForm.vue';
+import type { GetCarDto } from '@dto/car.dto';
 
 const columns = ref<TableColumn[]>([
   {
@@ -17,9 +18,13 @@ const columns = ref<TableColumn[]>([
     label: 'Модель',
     name: 'model',
   },
+  {
+    label: 'Цена',
+    name: 'price',
+  },
 ]);
 
-const rows = ref<Record<string, string>[]>([]);
+const rows = ref<Record<keyof GetCarDto, string>[]>([]);
 
 const carService = useCarService();
 
@@ -28,15 +33,23 @@ const showAddCarWindow = () => {
   showingAddCarWindow.value = true;
 };
 
+const addNewCar = (car: GetCarDto) => {
+  rows.value.push(formatCarObject(car));
+  showingAddCarWindow.value = false;
+};
+
+function formatCarObject(car: GetCarDto) {
+  return {
+    id: `${car.id}`,
+    brand: formatText(car.brand),
+    model: formatText(car.model),
+    price: `${car.price} ₽`,
+  };
+}
+
 onBeforeMount(() => {
   carService.getCarList().then((carList) => {
-    carList.forEach((car) =>
-      rows.value.push({
-        id: `${car.id}`,
-        brand: formatText(car.brand),
-        model: formatText(car.model),
-      }),
-    );
+    carList.forEach((car) => rows.value.push(formatCarObject(car)));
   });
 });
 </script>
@@ -48,7 +61,7 @@ onBeforeMount(() => {
     </div>
     <Table :columns="columns" :rows="rows" />
   </div>
-  <common-dialog v-model="showingAddCarWindow" title="Добавление автомобиля" />
+  <add-car-form v-model="showingAddCarWindow" @create-car="addNewCar" />
 </template>
 
 <style lang="scss" scoped>

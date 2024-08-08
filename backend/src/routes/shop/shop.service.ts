@@ -42,7 +42,8 @@ export class ShopService {
     ]);
 
     return {
-      shop,
+      id: shop.id,
+      name: shop.name,
       phones,
       cars,
     };

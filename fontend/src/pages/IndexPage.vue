@@ -40,7 +40,7 @@ onBeforeMount(() => {
         model: formatText(item.model),
         price: formatPrice(item.price),
         shop: item.shop,
-        phone: item.phones.join(', '),
+        phone: item.phones?.join(', '),
       });
     });
   });

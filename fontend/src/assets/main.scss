@@ -1,5 +1,6 @@
-@import './base.css';
-@import './flex.css';
+@import './base.scss';
+@import './flex.scss';
+@import './form/form.scss';
 
 #app {
   min-height: 100vh;

@@ -48,7 +48,7 @@ export class ShopCarsModel implements Model {
 
     createShopCarDto.carIds.forEach(carId =>
       insertQuery.push(
-        `INSERT INTO ${TableName} (shop_id, car_id) VALUES (${createShopCarDto.shopId}, ${createShopCarDto.carIds})`,
+        `INSERT INTO ${TableName} (shop_id, car_id) VALUES (${createShopCarDto.shopId}, ${carId})`,
       ),
     );
 

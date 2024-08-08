@@ -22,26 +22,6 @@ export function CarController(app: Express) {
   });
 
   /**
-   * @description получение информации об одной машине по её id
-   */
-  router.get('/:id', async (req: Request, res: Response) => {
-    const info = await carService.getCar();
-    return res.json(info);
-  });
-
-  /**
-   * @description удаление машины по её id
-   */
-  router.delete('/:id', async (req: Request, res: Response) => {
-    try {
-      await carService.deleteCar(req.body.carId);
-      return res.send('Успешное удаление');
-    } catch (error) {
-      return res.status(500).send('Ошибка удаление автомобиля ');
-    }
-  });
-
-  /**
    * @description создание новой машины
    * @body {brandId: number, model: string}
    */
@@ -52,7 +32,7 @@ export function CarController(app: Express) {
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.startsWith('duplicate key value')) {
-          return res.status(403).json('Значение уже существует');
+          return res.status(409).json('Значение уже существует');
         }
       }
 
@@ -85,6 +65,26 @@ export function CarController(app: Express) {
       }
 
       return res.status(500).send('Ошибка на серверве');
+    }
+  });
+
+  /**
+   * @description получение информации об одной машине по её id
+   */
+  router.get('/:id', async (req: Request, res: Response) => {
+    const info = await carService.getCar();
+    return res.json(info);
+  });
+
+  /**
+   * @description удаление машины по её id
+   */
+  router.delete('/:id', async (req: Request, res: Response) => {
+    try {
+      await carService.deleteCar(req.body.carId);
+      return res.send('Успешное удаление');
+    } catch (error) {
+      return res.status(500).send('Ошибка удаление автомобиля ');
     }
   });
 
