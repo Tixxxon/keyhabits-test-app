@@ -1,6 +1,5 @@
 import { Pool, QueryResult } from 'pg';
 import { Model } from '../model.interface';
-import { CreateShopDto } from '@dto/shop.dto';
 
 export const TableName = 'phones';
 
